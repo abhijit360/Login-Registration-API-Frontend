@@ -21,18 +21,19 @@ export default function Form({
   }
 
   function checkValidity() {
-    if (passwordInputRef.current.value.length != 0 || checkPassword !=0){
-    if (checkPassword == passwordInputRef.current.value) {
-      setPasswordValidity(false);
-    } else {
-      setPasswordValidity(true);
+    if (passwordInputRef.current.value.length != 0 || checkPassword != 0) {
+      if (checkPassword == passwordInputRef.current.value) {
+        setPasswordValidity(false);
+      } else {
+        setPasswordValidity(true);
+      }
     }
   }
-}
-
 
   useEffect(() => {
-    let checkerTimer = setTimeout(()=>{checkValidity()}, 1000);
+    let checkerTimer = setTimeout(() => {
+      checkValidity();
+    }, 1000);
     return () => {
       clearTimeout(checkerTimer);
     };
@@ -40,31 +41,32 @@ export default function Form({
 
   function submitHandler(event) {
     event.preventDefault();
-    // props.setLoginObject({
-    //   email: emailInputRef.current.value,
-    //   password: passwordInputRef.current.value,
-    // });
-
-    if (type == "Login") {
-      returnObject({
-        email: emailInputRef.current.value,
-        password: passwordInputRef.current.value,
-      });
-    } else if (type == "Register") {
-      returnObject({
-        name: nameInputRef.current.value,
-        email: emailInputRef.current.value,
-        phone: phoneInputRef.current.value,
-        password: passwordInputRef.current.value,
-      });
-    } else if (type == "Edit") {
-      returnObject({
-        // when accessing this api, we need to pass the current email from the local storage
-        email: userObject["email"],
-        new_email: emailInputRef.current.value,
-        phone: phoneInputRef.current.value,
-        password: passwordInputRef.current.value,
-      });
+    if (passwordValidity) {
+      // props.setLoginObject({
+      //   email: emailInputRef.current.value,
+      //   password: passwordInputRef.current.value,
+      // });
+      if (type == "Login") {
+        returnObject({
+          email: emailInputRef.current.value,
+          password: passwordInputRef.current.value,
+        });
+      } else if (type == "Register") {
+        returnObject({
+          name: nameInputRef.current.value,
+          email: emailInputRef.current.value,
+          phone: phoneInputRef.current.value,
+          password: passwordInputRef.current.value,
+        });
+      } else if (type == "Edit") {
+        returnObject({
+          // when accessing this api, we need to pass the current email from the local storage
+          email: userObject["email"],
+          new_email: emailInputRef.current.value,
+          phone: phoneInputRef.current.value,
+          password: passwordInputRef.current.value,
+        });
+      }
     }
   }
 
@@ -112,7 +114,9 @@ export default function Form({
             value={checkPassword}
           />
         </div>
-        {passwordValidity && <span className="error-message">passwords do not match</span>}
+        {passwordValidity && (
+          <span className="error-message">passwords do not match</span>
+        )}
       </div>
     </>
   );
@@ -177,7 +181,7 @@ export default function Form({
             ref={passwordInputRef}
           />
         </div>
-        
+
         <div className="input-field">
           <label>Password</label>
           <input
@@ -187,7 +191,9 @@ export default function Form({
             ref={passwordInputRef}
           />
         </div>
-        {passwordValidity && <span className="error-message">passwords do not match</span>}
+        {passwordValidity && (
+          <span className="error-message">passwords do not match</span>
+        )}
       </div>
     </>
   );
