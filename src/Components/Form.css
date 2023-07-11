@@ -43,6 +43,12 @@
   border-radius: 5px;
 }
 
+.error-message{
+  align-self: flex-end;
+  display: inline;
+  font-weight: bold;
+  color:red;
+}
 
 
 .Form-container h1,h3{

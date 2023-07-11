@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import styles from "./Form.css";
 export default function Form({
   returnObject,
@@ -10,8 +10,33 @@ export default function Form({
   const passwordInputRef = useRef();
   const phoneInputRef = useRef();
 
+  const [checkPassword, setCheckPassword] = useState("");
+  const [passwordValidity, setPasswordValidity] = useState(false);
+
   const [editEmailData, setEmailData] = useState(userObject["email"]);
   const [editPhoneData, setPhoneData] = useState(userObject["phone"]);
+
+  function CheckPasswordHandler(event) {
+    setCheckPassword(event.target.value);
+  }
+
+  function checkValidity() {
+    if (passwordInputRef.current.value.length != 0 || checkPassword !=0){
+    if (checkPassword == passwordInputRef.current.value) {
+      setPasswordValidity(false);
+    } else {
+      setPasswordValidity(true);
+    }
+  }
+}
+
+
+  useEffect(() => {
+    let checkerTimer = setTimeout(()=>{checkValidity()}, 1000);
+    return () => {
+      clearTimeout(checkerTimer);
+    };
+  }, [checkPassword]);
 
   function submitHandler(event) {
     event.preventDefault();
@@ -77,6 +102,17 @@ export default function Form({
             ref={passwordInputRef}
           />
         </div>
+        <div className="input-field">
+          <label>Re-enter Password</label>
+          <input
+            id="password"
+            type="password"
+            placeholder="password"
+            onChange={CheckPasswordHandler}
+            value={checkPassword}
+          />
+        </div>
+        {passwordValidity && <span className="error-message">passwords do not match</span>}
       </div>
     </>
   );
@@ -95,7 +131,6 @@ export default function Form({
             placeholder="name@email.com"
           />
         </div>
-
         <div className="input-field">
           <label>Password</label>
           <input
@@ -142,6 +177,17 @@ export default function Form({
             ref={passwordInputRef}
           />
         </div>
+        
+        <div className="input-field">
+          <label>Password</label>
+          <input
+            id="password"
+            type="password"
+            placeholder="password"
+            ref={passwordInputRef}
+          />
+        </div>
+        {passwordValidity && <span className="error-message">passwords do not match</span>}
       </div>
     </>
   );

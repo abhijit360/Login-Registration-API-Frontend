@@ -41,11 +41,6 @@ axiosLoginRegistrationInstance.interceptors.request.use(
 
 axiosLoginRegistrationInstance.interceptors.response.use(
   (response) => {
-    console.log("THIS IS WHERE THE ISSUE IS?")
-    console.log("Response Headers", response.headers)
-    console.log("Response Data", response.data)
-
-    console.log("Authoriation headers", response.headers["authorization"])
     let jwt = response.headers["authorization"].split(" ")[1]
     
     if(jwt){
