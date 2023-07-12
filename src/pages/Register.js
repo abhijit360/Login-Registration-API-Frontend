@@ -32,9 +32,7 @@ export default function Register(props) {
           console.log("navigating)")
           navigate("/HomePage/");
         } else {
-          console.log("Running 4")
-          setErrorMessage(response.data["message"]);
-          console.log("Running 5")
+          setErrorMessage(response.data["error"]);
           setShowErrorMessage(true);
           console.log("ERROR!");
         }
@@ -48,7 +46,7 @@ export default function Register(props) {
   return (
     <>
       <div className="page-container">
-        {showErrorMessage && <h3>Error: {errorMessage}</h3>}
+        {showErrorMessage && <span className="error-message">Error: {errorMessage}</span>}
         <Form type="Register" returnObject={setRegisterObject} />
         <br />
         <div className="alternate-option">

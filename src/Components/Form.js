@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useReducer, useEffect } from "react";
 import styles from "./Form.css";
 export default function Form({
   returnObject,
@@ -21,31 +21,35 @@ export default function Form({
   }
 
   function checkValidity() {
-    if (passwordInputRef.current.value.length != 0 || checkPassword != 0) {
+    if (checkPassword.length != 0 || passwordInputRef.current.value != null ) {
       if (checkPassword == passwordInputRef.current.value) {
-        setPasswordValidity(false);
-      } else {
         setPasswordValidity(true);
+      } else {
+        setPasswordValidity(false);
       }
     }
   }
 
+  useEffect(()=>{
+    // Unsure why this works instead of the just putting the code below 
+    if(type == "Login"){
+      setPasswordValidity(true);
+    }
+  }, [])
+
   useEffect(() => {
     let checkerTimer = setTimeout(() => {
       checkValidity();
-    }, 1000);
+    }, 500);
     return () => {
       clearTimeout(checkerTimer);
     };
   }, [checkPassword]);
 
+
   function submitHandler(event) {
     event.preventDefault();
     if (passwordValidity) {
-      // props.setLoginObject({
-      //   email: emailInputRef.current.value,
-      //   password: passwordInputRef.current.value,
-      // });
       if (type == "Login") {
         returnObject({
           email: emailInputRef.current.value,
@@ -107,14 +111,13 @@ export default function Form({
         <div className="input-field">
           <label>Re-enter Password</label>
           <input
-            id="password"
             type="password"
             placeholder="password"
             onChange={CheckPasswordHandler}
             value={checkPassword}
           />
         </div>
-        {passwordValidity && (
+        {!passwordValidity && (
           <span className="error-message">passwords do not match</span>
         )}
       </div>
@@ -183,15 +186,15 @@ export default function Form({
         </div>
 
         <div className="input-field">
-          <label>Password</label>
+          <label>Re-enter Password</label>
           <input
-            id="password"
             type="password"
             placeholder="password"
-            ref={passwordInputRef}
+            onChange={CheckPasswordHandler}
+            value={checkPassword}
           />
         </div>
-        {passwordValidity && (
+        {!passwordValidity && (
           <span className="error-message">passwords do not match</span>
         )}
       </div>

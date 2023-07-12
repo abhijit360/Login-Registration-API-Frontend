@@ -27,7 +27,7 @@ export default function EditUserDetails(props) {
           console.log("Edited User!");
           navigate("/HomePage/");
         } else {
-          setErrorMessage(response.data["Error"]);
+          setErrorMessage(response.data["error"]);
           setShowErrorMessage(true);
           console.log("ERROR!");
         }
@@ -40,7 +40,7 @@ export default function EditUserDetails(props) {
   return (
     <>
       <div className="page-container">
-        {showErrorMessage && <h3>Error: {errorMessage}</h3>}
+        {showErrorMessage && <span className="error-message">Error: {errorMessage}</span>}
         <Form
           type="Edit"
           userObject={JSON.parse(localStorage.getItem("user_data"))}

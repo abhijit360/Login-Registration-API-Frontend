@@ -45,6 +45,7 @@ export default function IndexPage(props) {
     axiosLoginRegistrationInstance
       .post(loginURL, loginObject)
       .then((response) => {
+        console.log("RESPONSE DATAAAAAA----->", response.data)
         if (response.data["status_code"] == 200) {
           localStorage.setItem(
             "user_data",
@@ -56,7 +57,7 @@ export default function IndexPage(props) {
           console.log("Logged in!");
           navigate("/HomePage/");
         } else {
-          setErrorMessage(response.data["message"]);
+          setErrorMessage(response.data["error"]);
           setShowErrorMessage(true);
           console.log("ERROR!");
         }
@@ -69,7 +70,7 @@ export default function IndexPage(props) {
   return (
     <>
       <div className="page-container">
-        {showErrorMessage && <h3>Error: {errorMessage}</h3>}
+        {showErrorMessage && <span className="error-message">Error: {errorMessage}</span>}
         <Form type="Login" returnObject={setLoginObject} />
 
         <div className="alternate-option">
